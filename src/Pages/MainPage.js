@@ -92,9 +92,8 @@ export default class MainPage extends React.Component {
             pet: randomPet
           })
         })
-        .then(() => {
-          this.getPets();
-        })
+        
+    
         fetch(`${config.API_ENDPOINT}/people`,
         {
           method: 'DELETE',
@@ -106,6 +105,9 @@ export default class MainPage extends React.Component {
             this.setState({
               people: this.state.people.slice(1, this.state.people.length)
             })
+          })
+          .then(() => {
+          this.getPets();
           })
       }
       else if (this.state.people.length < 5) {
