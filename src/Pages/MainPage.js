@@ -31,6 +31,7 @@ export default class MainPage extends React.Component {
       this.setState({
         people: [...this.state.people, resJson],
       })
+      window.localStorage.setItem('petful_username', resJson)
     })
   }
 
@@ -61,6 +62,10 @@ export default class MainPage extends React.Component {
           pets: resJson
         });
       })
+  }
+
+  dequeuePeople = () => {
+    setInterval(console.log('interval'), 5000)
   }
 
   render() {
