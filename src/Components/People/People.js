@@ -1,5 +1,5 @@
 import React from 'react';
-import config from '../../config';
+
 
 export default class People extends React.Component {
   displayPeople = () => {
@@ -10,8 +10,8 @@ export default class People extends React.Component {
     return 'Nobody in queue'
   }
   htmlPeople = (people) => {
-    return people.map(person => {
-      return <li className="people-list-item">{person}</li>
+    return people.map((person, i) => {
+      return <li key={i} className="people-list-item">{person}</li>
     });
   }
   render() {

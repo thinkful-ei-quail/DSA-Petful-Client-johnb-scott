@@ -1,12 +1,8 @@
 import React from 'react';
-import config from '../../config';
+
 
 export default class Pets extends React.Component {
-  displayPets = () => {
-    const { pets } = this.props;
-    const dog = pets.dog;
-    const cat = pets.cat;
-  }
+  
   displayNextDog = () => {
     const {dog} = this.props.pets;
     if (dog) {

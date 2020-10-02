@@ -80,7 +80,6 @@ export default class MainPage extends React.Component {
       //If current user is in front or there are no more in queue
       if ((window.localStorage.getItem('petful_username') !== this.state.people[0]) &&
         this.state.people.length > 0) {
-        let pets = this.state.pets;
         let randomPet = ['cats', 'dogs'][Math.floor(Math.random() * 2)]
 
         fetch(`${config.API_ENDPOINT}/pets`,
