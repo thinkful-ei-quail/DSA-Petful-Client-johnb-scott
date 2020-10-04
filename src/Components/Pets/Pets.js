@@ -5,17 +5,19 @@ export default class Pets extends React.Component {
   
   displayNextDog = () => {
     const {dog} = this.props.pets;
-    if (dog) {
-      return this.petHtml(dog);
-    }
+    if (dog !== undefined) {
+      return this.petHtml(dog[0]);
+    } else {
     return 'No Dog Available';
+    }
   }
   displayNextCat = () => {
     const {cat} = this.props.pets;
-    if (cat) {
-      return this.petHtml(cat);
-    }
+    if (cat !== undefined) {
+      return this.petHtml(cat[0]);
+    } else {
     return 'No Cat Available'
+    }
   }
   petHtml = (pet) => {
     return <div className='pet-container'>

@@ -6,6 +6,8 @@ import EnterQueue from '../Components/EnterQueue/EnterQueue'
 import AdoptButtons from '../Components/AdoptButtons/AdoptButtons';
 import Confirmation from '../Components/Confirmation/Confirmation';
 
+import ApiService from '../ApiService/ApiService'
+
 export default class MainPage extends React.Component {
   state = {
     pets: {},
@@ -37,12 +39,14 @@ export default class MainPage extends React.Component {
           people: [...this.state.people, resJson],
         })
       })
+
+      this.dequeuePeople()
   }
 
   componentDidMount = () => {
     this.getPeople();
     this.getPets();
-    this.dequeuePeople();
+    //this.dequeuePeople();
   }
 
   getPeople = () => {
@@ -77,57 +81,47 @@ export default class MainPage extends React.Component {
       'Kratos'
     ]
     setInterval(() => {
+      console.log('interval')
       //If current user is in front or there are no more in queue
       if ((window.localStorage.getItem('petful_username') !== this.state.people[0]) &&
         this.state.people.length > 0) {
+
         let randomPet = ['cats', 'dogs'][Math.floor(Math.random() * 2)]
-
-        fetch(`${config.API_ENDPOINT}/pets`,
-          {
-            method: 'DELETE',
-            headers: {
-              'content-type': 'application/json'
-            },
-            body: JSON.stringify({
-              pet: randomPet
-            })
-          })
-
-
-        fetch(`${config.API_ENDPOINT}/people`,
-          {
-            method: 'DELETE',
-            headers: {
-              'content-type': 'application/json'
+          Promise.all([ApiService.removeRandomPet(randomPet), ApiService.removeFrontPerson()])
+            .then(() => {
+              if(randomPet === 'cats') {
+              this.setState({
+                pets: {
+                  cat: [...this.state.pets.cat.slice(1)],
+                  dog: [...this.state.pets.dog]
+                },
+                people: this.state.people.slice(1)
+              })
+            } else if(randomPet === 'dogs') {
+              this.setState({
+                pets: {
+                  cat: [...this.state.pets.cat],
+                  dog: [...this.state.pets.dog.slice(1)]
+                },
+                people: this.state.people.slice(1)
+              })
             }
-          })
-          .then(res => {
-            this.setState({
-              people: this.state.people.slice(1, this.state.people.length)
             })
-          })
-          .then(() => {
-            this.getPets();
-          })
+            .catch( e => {
+                console.log(e)
+              })
       }
       else if (this.state.people.length < 5) {
-        fetch(`${config.API_ENDPOINT}/people`, {
-          method: 'POST',
-          headers: {
-            'content-type': 'application/json'
-          },
-          body: JSON.stringify(
-            {
-              name: randomUsers[Math.floor((Math.random() * 4))]
+        let randomPerson = randomUsers[Math.floor((Math.random() * 4))]
+
+        ApiService.addRandomPerson(randomPerson)
+          .then(() => {
+              this.setState({
+                people: [...this.state.people, randomPerson]
+              })
             }
           )
-        })
-          .then(res => res.json())
-          .then(resJSON => {
-            this.setState({
-              people: [...this.state.people, resJSON]
-            })
-          });
+          .catch(e => console.log(e))
       }
     }, 5000)
   }
@@ -175,7 +169,7 @@ export default class MainPage extends React.Component {
       })
       .then(res => {
         this.setState({
-          people: this.state.people.slice(1, this.state.people.length)
+          people: this.state.people.slice(1)
         })
       })
       .then(() => {
