@@ -46,7 +46,6 @@ export default class MainPage extends React.Component {
   componentDidMount = () => {
     this.getPeople();
     this.getPets();
-    //this.dequeuePeople();
   }
 
   getPeople = () => {
