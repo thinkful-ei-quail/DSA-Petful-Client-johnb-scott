@@ -1,5 +1,7 @@
 import React from 'react';
 
+import './Pets.css'
+
 
 export default class Pets extends React.Component {
   

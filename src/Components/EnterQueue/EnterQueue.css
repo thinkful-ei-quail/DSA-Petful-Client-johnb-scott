@@ -1,0 +1,7 @@
+.queue-form label,
+.queue-form input,
+.queue-form button { 
+  display: block;
+  margin: 10px auto;
+  max-width: 320px;
+}

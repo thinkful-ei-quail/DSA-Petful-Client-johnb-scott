@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import pets from '../images/pets.jpg'
+import './LandingPage.css'
 
 export default class LandingPage extends React.Component {
   render() {

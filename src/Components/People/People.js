@@ -1,5 +1,5 @@
 import React from 'react';
-
+import './People.css'
 
 export default class People extends React.Component {
   displayPeople = () => {

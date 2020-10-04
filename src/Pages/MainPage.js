@@ -5,7 +5,7 @@ import Pets from '../Components/Pets/Pets';
 import EnterQueue from '../Components/EnterQueue/EnterQueue'
 import AdoptButtons from '../Components/AdoptButtons/AdoptButtons';
 import Confirmation from '../Components/Confirmation/Confirmation';
-
+import './MainPage.css'
 import ApiService from '../ApiService/ApiService'
 
 export default class MainPage extends React.Component {
