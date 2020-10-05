@@ -37,9 +37,10 @@ export default class MainPage extends React.Component {
         console.log(window.localStorage.getItem('petful_username'));
         this.setState({
           people: [...this.state.people, resJson],
+          name: ''
         })
       })
-
+      
       this.dequeuePeople()
   }
 
@@ -134,9 +135,35 @@ export default class MainPage extends React.Component {
       this.dequeueAnimal(plural)
     }
     this.dequeuePerson()
+
+    if(pet === 'cat') {
     this.setState({
-      adopted: ''
+      adopted: '',
+      pets: {
+        cat: [...this.state.pets.cat.slice(1)],
+        dog: [...this.state.pets.dog]
+      },
+      people: this.state.people.slice(1)
     })
+  } else if(pet === 'dog') {
+    this.setState({
+      adopted: '',
+      pets: {
+        cat: [...this.state.pets.cat],
+        dog: [...this.state.pets.dog.slice(1)]
+      },
+      people: this.state.people.slice(1)
+    }) 
+  } else if(pet === 'cat and dog') {
+    this.setState({
+      adopted: '',
+      pets: {
+        cat: [...this.state.pets.cat.slice(1)],
+        dog: [...this.state.pets.dog.slice(1)]
+      },
+      people: this.state.people.slice(1)
+    })
+  }
 
   }
 
@@ -167,12 +194,9 @@ export default class MainPage extends React.Component {
         }
       })
       .then(res => {
-        this.setState({
-          people: this.state.people.slice(1)
-        })
-      })
-      .then(() => {
-        this.getPets();
+        if(!res) {
+          throw new Error('Something went wrong, try again')
+        }
       })
   }
 
@@ -188,6 +212,11 @@ export default class MainPage extends React.Component {
               pet
             })
           })
+          .then(res => {
+            if(!res) {
+              throw new Error('Something went wrong, try again')
+            }
+          })
   }
 
   render() {
@@ -202,7 +231,7 @@ export default class MainPage extends React.Component {
             adoptDog={this.adoptDog}
             adoptBoth={this.adoptBoth}
           />}
-        <EnterQueue handleSubmit={this.handleNameSubmit} handleChange={this.handleNameChange} />
+        <EnterQueue name={this.state.name} handleSubmit={this.handleNameSubmit} handleChange={this.handleNameChange} />
         {adopted 
           && <Confirmation 
             petType={adopted} 
